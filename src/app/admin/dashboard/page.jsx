@@ -39,7 +39,7 @@ export default function DashboardOverviewMain() {
     <div className="serbi-page">
       {/* Title */}
       <div className="mb-4">
-        <div className="serbi-um-title">Dashboard Overview</div>
+        <div className="serbi-um-title mb-2">Dashboard Overview</div>
         <div className="serbi-subtitle">Welcome to Serbi admin dashboard</div>
       </div>
 
