@@ -368,7 +368,7 @@ table th {
 .sidebar-container {
   /* padding-top: 15px; */
   box-sizing: border-box;
-  background: #97C0CC;
+  background: #F7C845;
   border-right: 1px solid #e6e6e6;
   font-family: "Inter", sans-serif;
   height: 100vh;
@@ -424,9 +424,9 @@ table th {
 }
 
 .menu-item.active {
-  background: #d7eefb;
+  background: #F7C845;
   font-weight: 600;
-  color: #0091ad;
+  color: #000;
 }
 
 /* Top Bar */
@@ -620,7 +620,7 @@ table th {
 }
 
 .serbi-list-name {
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 500;
   color: #111;
 }

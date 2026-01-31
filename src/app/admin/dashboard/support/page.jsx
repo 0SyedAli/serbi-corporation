@@ -142,7 +142,7 @@ export default function ServiceRequestsMain() {
 
             {/* Tabs (reuse previous tabs CSS) */}
             <div className="mt-3">
-                <div className="serbi-um-tabs" style={{ width: "820px" }}>
+                <div className="serbi-um-tabs" >
                     <button onClick={() => setTab("open")} className={`serbi-um-tab ${tab === "open" ? "active" : ""}`}>
                         Open Tickets
                     </button>

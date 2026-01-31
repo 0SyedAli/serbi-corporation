@@ -166,7 +166,7 @@ export default function ServiceRequestsMain() {
 
             {/* Tabs (reuse previous tabs CSS) */}
             <div className="mt-3">
-                <div className="serbi-um-tabs" style={{ width: "820px" }}>
+                <div className="serbi-um-tabs" >
                     <button type="button" className={`serbi-um-tab ${tab === "new" ? "active" : ""}`} onClick={() => setTab("new")}>
                         New Requests
                     </button>
