@@ -29,7 +29,7 @@ export default function LoginPage() {
           <input
             type="email"
             className="form-control auth-input"
-            placeholder="name@school.edu"
+            placeholder="name@example.edu"
             {...register("email")}
           />
         </div>
