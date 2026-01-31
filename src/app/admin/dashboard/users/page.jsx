@@ -44,7 +44,7 @@ export default function UserManagementMain() {
 
   return (
     <div className="serbi-um-page">
-      <div className="serbi-title">User Management</div>
+      <div className="serbi-um-title">User Management</div>
 
       {/* Tabs (reuse previous tabs CSS) */}
       <div className="mt-3">
