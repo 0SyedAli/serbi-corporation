@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import AuthInput from "@/components/form/AuthInput";
 import { showErrorToast, showSuccessToast } from "@/lib/toast";
 
-export default function AdminSignupPage() {
+export default function AdminLoginPage() {
   const router = useRouter();
 
   const {
@@ -17,41 +17,45 @@ export default function AdminSignupPage() {
 
   const onSubmit = async (values) => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/signup`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/admin/forgetPassword`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        }
+      );
 
       const data = await res.json();
 
+      // ✅ HANDLE API-LEVEL FAILURE
       if (!data.success) {
-        throw new Error(data.msg || "Admin signup failed");
+        throw new Error(data.msg || "No account found");
       }
 
       if (data?.data) {
         localStorage.setItem("admin", JSON.stringify(data?.data));
       }
-      showSuccessToast(data?.msg || "Super Admin registered successfully!");
-      // ✅ success → redirect to admin dashboard or login
-      router.push("/admin/dashboard");
-    } catch (error) {
-      showErrorToast(
-        error?.message ||
-        "Something went wrong"
+      // ✅ SUCCESS FLOW ONLY
+      showSuccessToast(
+        data?.msg || "OTP sent to your email address successfully"
       );
+
+      router.push("/auth/otp");
+
+    } catch (error) {
+      showErrorToast(error.message || "Something went wrong");
     }
   };
 
   return (
     <div className="auth-content">
-      <h1 className="auth-title">Admin Sign up</h1>
+      <h1 className="auth-title">Forgot password?</h1>
       <p className="auth-subtitle">
-        Create your admin account
+        Enter your email address to reset your password
       </p>
-
       <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
 
         {/* EMAIL */}
@@ -64,29 +68,19 @@ export default function AdminSignupPage() {
           error={errors.email?.message}
         />
 
-        {/* PASSWORD */}
-        <AuthInput
-          label="Password"
-          type="password"
-          placeholder="Create password"
-          name="password"
-          register={register}
-          error={errors.password?.message}
-        />
-
         <button
           type="submit"
           className="btn auth-primary-btn w-100 mt-2"
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Creating admin..." : "Create Admin"}
+          {isSubmitting ? "Loading" : "Forgot"}
         </button>
       </form>
 
       <p className="auth-switch mt-4 mb-0 text-center">
-        Already have an admin account?{" "}
+        Back to {" "}
         <Link href="/auth/login" className="auth-link">
-          Sign in
+          Login
         </Link>
       </p>
     </div>

@@ -8,9 +8,9 @@ import { store, persistor } from "../redux/store";
 export default function Providers({ children }) {
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
+      {/* <PersistGate loading={null} persistor={persistor}> */}
         {children}
-      </PersistGate>
+      {/* </PersistGate> */}
     </Provider>
   );
 }

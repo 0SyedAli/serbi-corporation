@@ -72,7 +72,7 @@ export default function TechnicianManagementMain() {
     return (
         <div className="serbi-um-page">
             {/* reuse existing heading class */}
-            <div className="serbi-title mb-3">Technician Management</div>
+            <div className="serbi-um-title mb-3">Technician Management</div>
             <div className="row">
                 <div className="col-xxl-10">
                     <div className="serbi-tech-grid">

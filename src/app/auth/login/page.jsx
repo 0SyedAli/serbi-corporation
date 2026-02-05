@@ -3,47 +3,75 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import AuthInput from "@/components/form/AuthInput";
+import { showErrorToast, showSuccessToast } from "@/lib/toast";
 
-export default function LoginPage() {
+export default function AdminLoginPage() {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { errors, isSubmitting },
   } = useForm();
 
   const onSubmit = async (values) => {
-    // TODO: wire up real auth API later
-    // For now we just log so the UI is fully client-side.
-    console.log("login", values);
-  };
-  const router = useRouter();
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
 
+      const data = await res.json();
+
+      if (!data.success) {
+        throw new Error(data.msg || "Admin login failed");
+      }
+
+      if (data?.data) {
+        localStorage.setItem("admin", JSON.stringify(data?.data));
+      }
+      showSuccessToast(data?.msg || "Super Admin registered successfully!");
+      // ✅ success → redirect to admin dashboard or login
+      router.push("/admin/dashboard");
+    } catch (error) {
+      console.log(error)
+      showErrorToast(
+        error?.message ||
+        "Something went wrong"
+      );
+    }
+  };
   return (
     <div className="auth-content">
       <h1 className="auth-title">Sign in</h1>
-      <p className="auth-subtitle">Enter your account details to login</p>
-
+      <p className="auth-subtitle">
+        Enter your account details to login
+      </p>
       <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
-        <div className="mb-3">
-          <label className="auth-label">Email</label>
-          <input
-            type="email"
-            className="form-control auth-input"
-            placeholder="name@example.edu"
-            {...register("email")}
-          />
-        </div>
 
-        <div className="mb-3">
-          <label className="auth-label">Password</label>
-          <input
-            type="password"
-            className="form-control auth-input"
-            placeholder="Enter password"
-            {...register("password")}
-          />
-        </div>
+        {/* EMAIL */}
+        <AuthInput
+          label="Email"
+          type="email"
+          placeholder="Enter admin email"
+          name="email"
+          register={register}
+          error={errors.email?.message}
+        />
 
+        {/* PASSWORD */}
+        <AuthInput
+          label="Password"
+          type="password"
+          placeholder="Create password"
+          name="password"
+          register={register}
+          error={errors.password?.message}
+        />
         <div className="d-flex justify-content-between align-items-center mb-4">
           <div className="form-check">
             <input
@@ -56,21 +84,16 @@ export default function LoginPage() {
               Remember Me
             </label>
           </div>
-          <button
-            type="button"
-            className="btn btn-link p-0 auth-link small text-decoration-none"
-          >
+          <Link href="/auth/forgot" className="btn btn-link p-0 auth-link small text-decoration-none">
             Forgot password?
-          </button>
+          </Link>
         </div>
-
         <button
           type="submit"
           className="btn auth-primary-btn w-100"
           disabled={isSubmitting}
-          onClick={() => router.push("/admin/dashboard")}
         >
-          {isSubmitting ? "Signing in..." : "Sign in"}
+          {isSubmitting ? "Creating admin..." : "Login"}
         </button>
       </form>
 
@@ -83,5 +106,3 @@ export default function LoginPage() {
     </div>
   );
 }
-
-
