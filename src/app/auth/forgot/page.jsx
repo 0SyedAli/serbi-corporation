@@ -73,7 +73,7 @@ export default function AdminLoginPage() {
           className="btn auth-primary-btn w-100 mt-2"
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Loading" : "Forgot"}
+          {isSubmitting ? "Loading..." : "Forgot"}
         </button>
       </form>
 

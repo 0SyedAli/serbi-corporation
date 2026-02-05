@@ -34,7 +34,7 @@ export default function AdminLoginPage() {
       if (data?.data) {
         localStorage.setItem("admin", JSON.stringify(data?.data));
       }
-      showSuccessToast(data?.msg || "Super Admin registered successfully!");
+      showSuccessToast(data?.msg || "Super Admin login successfully!");
       // ✅ success → redirect to admin dashboard or login
       router.push("/admin/dashboard");
     } catch (error) {
@@ -67,7 +67,7 @@ export default function AdminLoginPage() {
         <AuthInput
           label="Password"
           type="password"
-          placeholder="Create password"
+          placeholder="Enter password"
           name="password"
           register={register}
           error={errors.password?.message}
@@ -93,7 +93,7 @@ export default function AdminLoginPage() {
           className="btn auth-primary-btn w-100"
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Creating admin..." : "Login"}
+          {isSubmitting ? "Loading..." : "Login"}
         </button>
       </form>
 
