@@ -1681,10 +1681,40 @@ select {
   text-align: center;
   box-shadow: 0 8px 30px rgba(0, 0, 0, .05);
   transition: transform .2s ease;
+  position: relative;
+  border: 1px solid #ccc;
 }
 
 .category-card:hover {
   transform: translateY(-3px);
+}
+
+.category-actions .btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-width: 2px;
+  padding: 0;
+  background-color: #FFF;
+}
+
+.category-actions .btn:first-child {
+  right: 50px;
+}
+
+.category-actions .btn:first-child:hover {
+  background-color: #000;
+}
+
+.category-actions .btn:last-child:hover {
+  background-color: #dc3545;
 }
 
 .category-image {
@@ -1697,8 +1727,9 @@ select {
 .category-title {
   font-size: 22px;
   font-weight: 600;
-  margin-bottom: 10px;
+  margin-bottom: 0px;
   text-transform: capitalize;
+
 }
 
 .category-actions {

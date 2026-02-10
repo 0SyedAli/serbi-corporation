@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { IoCloseOutline } from "react-icons/io5";
 import { FiPlus } from "react-icons/fi";
+import { MdDeleteForever, MdEdit, MdOutlineEdit } from "react-icons/md";
 
 const API = process.env.NEXT_PUBLIC_API_URL;
 
@@ -206,7 +207,7 @@ const PropertyType = () => {
           <p className="mt-3">No property types found.</p>
         )}
 
-        <div className="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-3 mt-3">
+        <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xxl-4 g-3 mt-1">
           {categories.map((cat) => (
             <div className="col" key={cat._id}>
               <div className="category-card text-center">
@@ -223,7 +224,7 @@ const PropertyType = () => {
                     className="btn btn-sm btn-outline-dark"
                     onClick={() => openEdit(cat)}
                   >
-                    Edit
+                    <MdEdit />
                   </button>
                   <button
                     className="btn btn-sm btn-outline-danger"
@@ -232,7 +233,7 @@ const PropertyType = () => {
                       setDeleteModal(true);
                     }}
                   >
-                    Delete
+                    <MdDeleteForever />
                   </button>
                 </div>
               </div>

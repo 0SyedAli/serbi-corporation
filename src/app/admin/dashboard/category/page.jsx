@@ -4,9 +4,10 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { IoCloseOutline } from "react-icons/io5";
-import { RiUploadCloud2Line } from "react-icons/ri";
+import { RiDeleteBin6Line, RiUploadCloud2Line } from "react-icons/ri";
 import { FiPlus } from "react-icons/fi";
 import { FaPencil } from "react-icons/fa6";
+import { MdDeleteForever, MdEdit, MdOutlineEdit } from "react-icons/md";
 
 const API = process.env.NEXT_PUBLIC_API_URL;
 const IMG_URL = process.env.NEXT_PUBLIC_IMAGE_URL;
@@ -192,7 +193,7 @@ const PestTypeCategory = () => {
 
         {/* {loading && <p>Loading...</p>} */}
 
-        <div className="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-3 mt-3">
+        <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xxl-4 g-3 mt-3">
           {
             loading ? <p>Loading...</p> :
               categories.map((cat) => (
@@ -211,7 +212,7 @@ const PestTypeCategory = () => {
                         className="btn btn-sm btn-outline-dark"
                         onClick={() => openEdit(cat)}
                       >
-                        Edit
+                        <MdEdit />
                       </button>
                       <button
                         className="btn btn-sm btn-outline-danger"
@@ -220,7 +221,7 @@ const PestTypeCategory = () => {
                           setDeleteModal(true);
                         }}
                       >
-                        Delete
+                        <MdDeleteForever />
                       </button>
                       {/* <button
                         className="btn btn-sm btn-outline-danger"
