@@ -193,8 +193,8 @@ const PropertyType = () => {
   return (
     <>
       <div className="serbi-um-page">
-        <div className="d-flex justify-content-between align-items-center">
-          <div className="serbi-um-title">All Property Types</div>
+        <div className="d-flex justify-content-end align-items-center">
+          {/* <div className="serbi-um-title">All Property Types</div> */}
           <button className="serbi-um-add-btn" onClick={openAdd}>
             <FiPlus size={18} /> Add Property Type
           </button>

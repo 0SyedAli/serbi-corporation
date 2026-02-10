@@ -21,7 +21,6 @@ function StatCard({ title, value, subText, tone = "success", icon }) {
   );
 }
 
-
 export default function DashboardOverviewMain() {
   const requests = [
     { name: "John Smith", code: "SR001", issue: "Termites", status: "New" },

@@ -174,8 +174,8 @@ const Severity = () => {
   return (
     <>
       <div className="serbi-um-page">
-        <div className="d-flex justify-content-between align-items-center">
-          <div className="serbi-um-title">All Severities</div>
+        <div className="d-flex justify-content-end align-items-center">
+          {/* <div className="serbi-um-title">All Severities</div> */}
           <button className="serbi-um-add-btn" onClick={openAdd}>
             <FiPlus size={18} /> Add Severity
           </button>

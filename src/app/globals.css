@@ -1258,7 +1258,7 @@ select:focus {
   margin-top: 18px;
 }
 
-.btn.btn-outline-secondary:disabled {
+button.btn.btn-secondary:disabled {
   background-color: transparent;
   color: #6c757d;
 }

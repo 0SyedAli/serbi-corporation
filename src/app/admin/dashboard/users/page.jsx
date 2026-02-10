@@ -76,10 +76,10 @@ export default function UserManagementMain() {
 
   return (
     <div className="serbi-um-page">
-      <div className="serbi-um-title">User Management</div>
+      {/* <div className="serbi-um-title">User Management</div> */}
 
       {/* Tabs */}
-      <div className="mt-3">
+      <div className="">
         <div className="serbi-um-tabs">
           <button
             className={`serbi-um-tab ${type === "User" ? "active" : ""
