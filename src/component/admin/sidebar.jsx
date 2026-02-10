@@ -5,10 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { AiOutlineHome } from "react-icons/ai";
 import { LuCalendarCheck, LuUserRound } from "react-icons/lu";
 import { IoLogOutOutline } from "react-icons/io5";
-import { TbNotification } from "react-icons/tb";
-import { MdOutlineAnalytics } from "react-icons/md";
 import Image from "next/image";
-import { FiSettings } from "react-icons/fi";
 
 export default function StudentSidebar() {
   const pathname = usePathname();
@@ -31,35 +28,50 @@ export default function StudentSidebar() {
       path: "/admin/dashboard/service",
     },
     {
-      icon: <TbNotification size={17} />,
-      label: "Technician Management",
-      path: "/admin/dashboard/technician",
+      icon: <LuCalendarCheck size={17} />,
+      label: "Pest Type Categories",
+      path: "/admin/dashboard/category",
     },
     {
-      icon: <MdOutlineAnalytics size={17} />,
-      label: "Payments & Billing",
-      path: "/admin/dashboard/payment",
+      icon: <LuCalendarCheck size={17} />,
+      label: "Property Type",
+      path: "/admin/dashboard/propertytype",
     },
     {
-      icon: <MdOutlineAnalytics size={17} />,
-      label: "Reports & Analytics",
-      path: "/admin/dashboard/reports",
+      icon: <LuCalendarCheck size={17} />,
+      label: "Severity",
+      path: "/admin/dashboard/severity",
     },
-    {
-      icon: <MdOutlineAnalytics size={17} />,
-      label: "Pest Types Management",
-      path: "/admin/dashboard/pest-types",
-    },
-    {
-      icon: <MdOutlineAnalytics size={17} />,
-      label: "Settings",
-      path: "/admin/dashboard/setting",
-    },
-    {
-      icon: <MdOutlineAnalytics size={17} />,
-      label: "Support / Complaints",
-      path: "/admin/dashboard/support",
-    },
+    // {
+    //   icon: <TbNotification size={17} />,
+    //   label: "Technician Management",
+    //   path: "/admin/dashboard/technician",
+    // },
+    // {
+    //   icon: <MdOutlineAnalytics size={17} />,
+    //   label: "Payments & Billing",
+    //   path: "/admin/dashboard/payment",
+    // },
+    // {
+    //   icon: <MdOutlineAnalytics size={17} />,
+    //   label: "Reports & Analytics",
+    //   path: "/admin/dashboard/reports",
+    // },
+    // {
+    //   icon: <MdOutlineAnalytics size={17} />,
+    //   label: "Pest Types Management",
+    //   path: "/admin/dashboard/pest-types",
+    // },
+    // {
+    //   icon: <MdOutlineAnalytics size={17} />,
+    //   label: "Settings",
+    //   path: "/admin/dashboard/setting",
+    // },
+    // {
+    //   icon: <MdOutlineAnalytics size={17} />,
+    //   label: "Support / Complaints",
+    //   path: "/admin/dashboard/support",
+    // },
   ];
 
   const userMenuItems = [

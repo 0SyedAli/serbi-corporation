@@ -245,11 +245,11 @@ export default function ServiceRequestsMain() {
                 </table>
                 {/* Pagination */}
                 <div className="d-flex justify-content-between align-items-center px-3 gap-2 mt-3">
-                    <button className="btn btn-outline-secondary" disabled={page === 1} onClick={() => setPage(page - 1)}>
+                    <button className="btn btn-secondary" disabled={page === 1} onClick={() => setPage(page - 1)}>
                         Prev
                     </button>
                     <span>{page} / {totalPages || 1}</span>
-                    <button className="btn btn-outline-secondary" disabled={page === totalPages} onClick={() => setPage(page + 1)}>
+                    <button className="btn btn-secondary" disabled={page === totalPages} onClick={() => setPage(page + 1)}>
                         Next
                     </button>
                 </div>

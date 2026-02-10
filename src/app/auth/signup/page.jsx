@@ -5,8 +5,11 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import AuthInput from "@/components/form/AuthInput";
 import { showErrorToast, showSuccessToast } from "@/lib/toast";
+import { useAdminAuthRedirect } from "@/lib/AuthRedirectHandler";
 
 export default function AdminSignupPage() {
+  useAdminAuthRedirect(); // default: auth page logic
+
   const router = useRouter();
 
   const {

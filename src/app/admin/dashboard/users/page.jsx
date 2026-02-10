@@ -220,7 +220,7 @@ export default function UserManagementMain() {
 
           <div className="d-flex justify-content-between align-items-center px-3 gap-2 mt-3">
             <button
-              className="btn btn-outline-secondary"
+              className="btn btn-secondary"
               disabled={page === 1}
               onClick={() => dispatch(setPage(page - 1))}
             >
@@ -232,7 +232,7 @@ export default function UserManagementMain() {
             </span>
 
             <button
-              className="btn btn-outline-secondary"
+              className="btn btn-secondary"
               disabled={page === totalPages}
               onClick={() => dispatch(setPage(page + 1))}
             >

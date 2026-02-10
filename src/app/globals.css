@@ -266,9 +266,11 @@
   padding: 10px 16px;
   font-size: 14px;
 }
+
 .auth_otp div {
   justify-content: space-around;
 }
+
 .auth-primary-btn {
   /* background: linear-gradient(135deg, #002f6c 0%, #004c97 100%); */
   background: #002345;
@@ -505,6 +507,7 @@ table th {
 .user-avatar img {
   border-radius: 100%;
 }
+
 /* ===============================
    SERBI DASHBOARD (MAIN SCREEN)
    Global CSS
@@ -731,7 +734,7 @@ table th {
   color: #111;
   transition: 0.15s ease;
   font-size: 14px;
-white-space: nowrap;
+  white-space: nowrap;
 }
 
 .serbi-um-tab.active {
@@ -808,9 +811,11 @@ white-space: nowrap;
   color: #111;
   font-size: 14px;
 }
+
 .recharts-wrapper {
   font-size: 14px;
 }
+
 .serbi-um-search input::placeholder {
   color: #737a87;
   font-weight: 400;
@@ -1253,7 +1258,10 @@ select:focus {
   margin-top: 18px;
 }
 
-
+.btn.btn-outline-secondary:disabled {
+  background-color: transparent;
+  color: #6c757d;
+}
 
 /* ===============================
    SERBI - TECHNICIAN MANAGEMENT
@@ -1661,6 +1669,150 @@ select {
   box-shadow: 0 1px 0 rgba(16, 24, 40, 0.02);
 
 }
+
+/* ======================
+   CATEGORY GRID
+====================== */
+
+.category-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 18px;
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, .05);
+  transition: transform .2s ease;
+}
+
+.category-card:hover {
+  transform: translateY(-3px);
+}
+
+.category-image {
+  height: 110px;
+  width: 100%;
+  object-fit: contain;
+  margin-bottom: 12px;
+}
+
+.category-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-transform: capitalize;
+}
+
+.category-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* ======================
+   UPLOAD BOX
+====================== */
+
+.upload-box {
+  border: 2px dashed #d0d5dd;
+  border-radius: 14px;
+  height: 110px;
+  width: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: #fafafa;
+  transition: border .2s ease;
+}
+
+.upload-box:hover {
+  border-color: #5a004f;
+}
+
+.upload-icon {
+  width: 64px;
+  margin-bottom: 10px;
+  opacity: .7;
+}
+
+.upload-box p {
+  margin: 0;
+  font-size: 12px;
+  color: #667085;
+}
+
+/* .upload-preview {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  border-radius: 10px;
+} */
+
+/* IMAGE UPLOAD PREVIEW */
+.upload-preview-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 4px;
+}
+
+.upload-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+/* EDIT ICON */
+.upload-edit-btn {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: #ffffff;
+  border: 1px solid #000;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .15s ease;
+}
+
+.upload-edit-btn:hover {
+  transform: scale(1.1);
+}
+
+/* EMPTY STATE */
+.upload-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #667085;
+  gap: 6px;
+}
+
+.serbi-btn-danger {
+  background: #dc2626;
+  color: #fff;
+  border: 1px solid #dc2626;
+  padding: 10px 18px;
+  border-radius: 10px;
+}
+
+.serbi-btn-outline {
+  padding: 10px 18px;
+  height: auto;
+}
+
+.serbi-btn-danger:hover {
+  background: #b91c1c;
+}
+
 
 @media (max-width: 640px) {
   .serbi-form-grid {

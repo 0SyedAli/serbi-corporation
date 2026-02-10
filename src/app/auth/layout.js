@@ -1,9 +1,10 @@
 "use client";
 
-import AuthRedirectHandler from "@/lib/AuthRedirectHandler";
+import AuthRedirectHandler, { useAdminAuthRedirect } from "@/lib/AuthRedirectHandler";
 import Image from "next/image";
 
 export default function AuthLayout({ children }) {
+
   return (
     <>
       {/* <AuthRedirectHandler /> */}
