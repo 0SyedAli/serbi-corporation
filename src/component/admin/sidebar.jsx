@@ -81,8 +81,7 @@ export default function StudentSidebar() {
   const isActive = (path) => pathname === path;
   const logout = (router) => {
     if (typeof window !== "undefined") {
-      localStorage.removeItem("user");
-      localStorage.removeItem("token"); // (safe even if not exists)
+      localStorage.removeItem("admin");
     }
 
     router.replace("/auth/login");
