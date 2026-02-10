@@ -87,9 +87,9 @@ export default function AdminLoginPage() {
               Remember Me
             </label>
           </div>
-          <Link href="/auth/forgot" className="btn btn-link p-0 auth-link small text-decoration-none">
+          {/* <Link href="/auth/forgot" className="btn btn-link p-0 auth-link small text-decoration-none">
             Forgot password?
-          </Link>
+          </Link> */}
         </div>
         <button
           type="submit"
@@ -100,12 +100,12 @@ export default function AdminLoginPage() {
         </button>
       </form>
 
-      <p className="auth-switch mt-4 mb-0 text-center">
+      {/* <p className="auth-switch mt-4 mb-0 text-center">
         Don&apos;t have an account?{" "}
         <Link href="/auth/signup" className="auth-link">
           Create one
         </Link>
-      </p>
+      </p> */}
     </div>
   );
 }
