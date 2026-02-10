@@ -12,11 +12,11 @@ export default function StudentSidebar() {
   const router = useRouter();
 
   const menuItems = [
-    {
-      icon: <AiOutlineHome size={17} />,
-      label: "Dashboard",
-      path: "/admin/dashboard",
-    },
+    // {
+    //   icon: <AiOutlineHome size={17} />,
+    //   label: "Dashboard",
+    //   path: "/admin/dashboard",
+    // },
     {
       icon: <LuUserRound size={17} />,
       label: "User Management",

@@ -39,7 +39,7 @@ export default function AdminSignupPage() {
       }
       showSuccessToast(data?.msg || "Super Admin registered successfully!");
       // ✅ success → redirect to admin dashboard or login
-      router.push("/admin/dashboard");
+      router.push("/admin/dashboard/users");
     } catch (error) {
       showErrorToast(
         error?.message ||

@@ -25,7 +25,7 @@ export function useAdminAuthRedirect({ protectedRoute = false } = {}) {
 
     // 🔓 Auth routes (login / signup)
     if (isValidAdmin) {
-      router.replace("/admin/dashboard");
+      router.replace("/admin/dashboard/users");
     }
   }, [router, pathname, protectedRoute]);
 }
