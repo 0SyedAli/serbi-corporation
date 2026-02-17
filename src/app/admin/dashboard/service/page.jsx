@@ -211,7 +211,14 @@ export default function ServiceRequestsMain() {
                         </tr>
                     </thead>
                     <tbody>
-                        {loading && <tr><td>Loading...</td></tr>}
+                        {loading && (
+                            <tr>
+                                <td colSpan={6} style={{ padding: 20 }}>
+                                    Loading...
+                                </td>
+                            </tr>
+                        )}
+
 
                         {!loading &&
                             paginatedRows.map((r) => (
@@ -238,7 +245,7 @@ export default function ServiceRequestsMain() {
 
                         {!loading && paginatedRows.length === 0 && (
                             <tr>
-                                <td>No data found</td>
+                                <td colSpan={6} style={{ padding: 20 }}>No data found</td>
                             </tr>
                         )}
                     </tbody>
