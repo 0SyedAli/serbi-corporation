@@ -21,8 +21,6 @@ function StatCardMini({
                 </div>
                 <div className={`serbi-stat-icon ${iconClassName}`}>{icon}</div>
             </div>
-
-            {/* let bootstrap color override your icon base */}
         </div>
     );
 }

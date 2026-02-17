@@ -207,7 +207,7 @@ export default function ServiceRequestsMain() {
                             <th style={{ width: "14%" }}>Property</th>
                             <th style={{ width: "12%" }}>Severity</th>
                             <th style={{ width: "12%" }}>Date</th>
-                            <th style={{ width: "10%" }}>Actions</th>
+                            {/* <th style={{ width: "10%" }}>Actions</th> */}
                         </tr>
                     </thead>
                     <tbody>
@@ -222,7 +222,7 @@ export default function ServiceRequestsMain() {
                                     <td>{r.property}</td>
                                     <td>{r.severity}</td>
                                     <td>{r.date}</td>
-                                    <td>
+                                    {/* <td>
                                         <button
                                             className="serbi-um-action-btn"
                                             onClick={() => {
@@ -232,7 +232,7 @@ export default function ServiceRequestsMain() {
                                         >
                                             <FiEye />
                                         </button>
-                                    </td>
+                                    </td> */}
                                 </tr>
                             ))}
 
@@ -257,7 +257,7 @@ export default function ServiceRequestsMain() {
 
 
             {/* Modal */}
-            {showModal && activeRow && (
+            {/* {showModal && activeRow && (
                 <div className="modal-backdrop-lite" onClick={() => setShowModal(false)}>
                     <div className="modal-sheet" onClick={(e) => e.stopPropagation()}>
                         <div className="form-container">
@@ -271,7 +271,7 @@ export default function ServiceRequestsMain() {
                         </div>
                     </div>
                 </div>
-            )}
+            )} */}
         </div>
     );
 }

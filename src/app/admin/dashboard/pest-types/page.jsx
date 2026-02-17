@@ -4,7 +4,6 @@ import React, { useMemo, useState } from "react";
 import { FiEdit2, FiTrash2, FiPlus } from "react-icons/fi";
 import { IoCloseOutline } from "react-icons/io5";
 
-
 export default function PestTypesManagementMain() {
     const [showModal, setShowModal] = useState(false);
 
@@ -27,8 +26,7 @@ export default function PestTypesManagementMain() {
             { id: "p3", pestName: "Bed Bugs", category: "Insects", treatmentMethod: "Heat Treatment", avgCostRange: "$1000-2500" },
             { id: "p4", pestName: "Cockroaches", category: "Insects", treatmentMethod: "Gel Bait", avgCostRange: "$150-400" },
             { id: "p5", pestName: "Ants", category: "Insects", treatmentMethod: "Perimeter Spray", avgCostRange: "$100-300" },
-        ],
-        []
+        ], []
     );
 
     const handleChange = (key, val) => {

@@ -4,10 +4,10 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { IoCloseOutline } from "react-icons/io5";
-import { RiDeleteBin6Line, RiUploadCloud2Line } from "react-icons/ri";
+import { RiUploadCloud2Line } from "react-icons/ri";
 import { FiPlus } from "react-icons/fi";
 import { FaPencil } from "react-icons/fa6";
-import { MdDeleteForever, MdEdit, MdOutlineEdit } from "react-icons/md";
+import { MdDeleteForever, MdEdit } from "react-icons/md";
 
 const API = process.env.NEXT_PUBLIC_API_URL;
 const IMG_URL = process.env.NEXT_PUBLIC_IMAGE_URL;

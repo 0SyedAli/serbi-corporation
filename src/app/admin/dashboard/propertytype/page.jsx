@@ -14,10 +14,8 @@ const PropertyType = () => {
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
-
   const [showModal, setShowModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-
   const [deleteModal, setDeleteModal] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState(null);
 
@@ -93,7 +91,6 @@ const PropertyType = () => {
       setLoading(false);
     }
   };
-
 
   useEffect(() => {
     getCategories2();
