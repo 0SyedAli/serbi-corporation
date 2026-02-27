@@ -40,7 +40,7 @@ export const verifyTechnician = createAsyncThunk(
 // Example: Modify the suspendUser action
 export const suspendUser = createAsyncThunk(
   "admin/suspendUser",
-  async ({ userId, durationValue, durationUnits, reason }, { rejectWithValue, dispatch }) => {
+  async ({ userId, durationValue, durationUnits, reason }, { rejectWithValue }) => {
     try {
       const adminId = getAdminId();
 
@@ -60,7 +60,7 @@ export const suspendUser = createAsyncThunk(
       if (!data.success) throw new Error(data.msg || "Suspend failed");
 
       // Show success toast
-      dispatch(showSuccessToast("User suspended successfully"));
+      showSuccessToast("User suspended successfully");
       return data;
     } catch (err) {
       return rejectWithValue(err.message);

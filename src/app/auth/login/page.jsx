@@ -36,18 +36,21 @@ export default function AdminLoginPage() {
 
       if (data?.data) {
         localStorage.setItem("admin", JSON.stringify(data?.data));
+        // Set a cookie so the middleware can read it on the server
+        document.cookie = "admin_session=true; path=/;";
+        showSuccessToast(data?.msg || "Super Admin login successfully!");
+        // ✅ success → redirect to admin dashboard or login
+        router.push("/admin/dashboard/users");
       }
-      showSuccessToast(data?.msg || "Super Admin login successfully!");
-      // ✅ success → redirect to admin dashboard or login
-      router.push("/admin/dashboard/users");
     } catch (error) {
-      console.log(error)
+      console.log(error);
       showErrorToast(
         error?.message ||
         "Something went wrong"
       );
     }
   };
+
   return (
     <div className="auth-content">
       <h1 className="auth-title">Sign in</h1>

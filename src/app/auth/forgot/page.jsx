@@ -37,6 +37,8 @@ export default function AdminLoginPage() {
 
       if (data?.data) {
         localStorage.setItem("admin", JSON.stringify(data?.data));
+        // Set a cookie so the middleware can read it on the server
+        document.cookie = "admin_session=true; path=/;";
       }
       // ✅ SUCCESS FLOW ONLY
       showSuccessToast(

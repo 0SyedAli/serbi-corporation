@@ -1,4 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  verifyTechnician,
+  suspendUser,
+  unsuspendUser,
+  blockUser,
+  unblockUser,
+} from "./adminActions";
 
 /* =========================
    ASYNC THUNK
@@ -111,6 +118,41 @@ const usersSlice = createSlice({
       .addCase(fetchUsers.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(verifyTechnician.fulfilled, (state, action) => {
+        const userId = action.meta.arg;
+        const user = state.list.find((u) => u.id === userId);
+        if (user) {
+          user.isVerified = true;
+        }
+      })
+      .addCase(suspendUser.fulfilled, (state, action) => {
+        const { userId } = action.meta.arg;
+        const user = state.list.find((u) => u.id === userId);
+        if (user) {
+          user.isSuspended = true;
+        }
+      })
+      .addCase(unsuspendUser.fulfilled, (state, action) => {
+        const userId = action.meta.arg;
+        const user = state.list.find((u) => u.id === userId);
+        if (user) {
+          user.isSuspended = false;
+        }
+      })
+      .addCase(blockUser.fulfilled, (state, action) => {
+        const userId = action.meta.arg;
+        const user = state.list.find((u) => u.id === userId);
+        if (user) {
+          user.isBlocked = true;
+        }
+      })
+      .addCase(unblockUser.fulfilled, (state, action) => {
+        const userId = action.meta.arg;
+        const user = state.list.find((u) => u.id === userId);
+        if (user) {
+          user.isBlocked = false;
+        }
       });
   },
 });

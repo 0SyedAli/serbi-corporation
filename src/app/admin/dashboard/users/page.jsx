@@ -57,6 +57,13 @@ export default function UserManagementMain() {
      SMART FETCH
   ========================= */
   useEffect(() => {
+    if (type !== "User") {
+      dispatch(setType("User"));
+    }
+  }, [dispatch, type]);
+
+  useEffect(() => {
+    if (type !== "User") return;
     const now = Date.now();
     const isStale =
       !lastFetchedAt || now - lastFetchedAt > ttl;
@@ -64,7 +71,7 @@ export default function UserManagementMain() {
     if (!shouldReload && !isStale) return;
 
     dispatch(fetchUsers({ type, page, limit }));
-  }, [type, page, shouldReload]);
+  }, [dispatch, type, page, limit, shouldReload, lastFetchedAt, ttl]);
 
   useEffect(() => {
     if (error) showErrorToast(error);
@@ -106,10 +113,7 @@ export default function UserManagementMain() {
         durationUnits,
         reason,
       })
-    ).then(() => {
-      // Refresh the user data after the suspend action is successful
-      dispatch(forceReload());
-    });
+    );
 
     setShowSuspendModal(false);
     setSelectedUserId(null);
@@ -185,58 +189,58 @@ export default function UserManagementMain() {
             </thead>
 
             <tbody>
-              {loading && (
+              {loading && rows.length === 0 && (
                 <tr>
-                  <td colSpan={5} style={{ padding: 20 }}>
+                  <td colSpan={5} style={{ padding: 20, textAlign: "center" }}>
                     Loading...
                   </td>
                 </tr>
               )}
 
-              {!loading &&
-                rows.map((u) => (
-                  <tr key={u.id}>
-                    <td className="serbi-um-name">{u.name}</td>
+              {rows.map((u) => (
+                <tr key={u.id} style={{ opacity: loading ? 0.6 : 1, transition: "opacity 0.2s" }}>
+                  <td className="serbi-um-name">{u.name}</td>
 
-                    <td>
-                      <div className="serbi-um-contact">
-                        <div className="serbi-um-contact-line">
-                          <FiMail className="serbi-um-contact-ico" />
-                          <span>{u.email}</span>
-                        </div>
-                        <div className="serbi-um-contact-line">
-                          <FiPhone className="serbi-um-contact-ico" />
-                          <span>{u.phone}</span>
-                        </div>
+                  <td>
+                    <div className="serbi-um-contact">
+                      <div className="serbi-um-contact-line">
+                        <FiMail className="serbi-um-contact-ico" />
+                        <span>{u.email}</span>
                       </div>
-                    </td>
+                      <div className="serbi-um-contact-line">
+                        <FiPhone className="serbi-um-contact-ico" />
+                        <span>{u.phone}</span>
+                      </div>
+                    </div>
+                  </td>
 
-                    <td className="text-wrap w-50">{u.address}</td>
+                  <td className="text-wrap w-50">{u.address}</td>
 
-                    <td>
-                      {/* Display Status */}
-                      <span
-                        className={`serbi-um-status ${u.isSuspended || u.isBlocked ? "inactive" : "active"}`}
+                  <td>
+                    {/* Display Status */}
+                    <span
+                      className={`serbi-um-status ${u.isSuspended || u.isBlocked ? "inactive" : "active"}`}
+                    >
+                      {u.isBlocked ? "Blocked" : u.isSuspended ? "Suspended" : "Active"}
+                    </span>
+                  </td>
+
+                  <td>
+                    {/* Actions Dropdown */}
+                    <div className="dropdown">
+                      <button
+                        className="btn btn-sm btn-light dropdown-toggle"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
                       >
-                        {u.isBlocked ? "Blocked" : u.isSuspended ? "Suspended" : "Active"}
-                      </span>
-                    </td>
+                        <FiMoreVertical />
+                      </button>
 
-                    <td>
-                      {/* Actions Dropdown */}
-                      <div className="dropdown">
-                        <button
-                          className="btn btn-sm btn-light dropdown-toggle"
-                          type="button"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          <FiMoreVertical />
-                        </button>
-
-                        <ul className="dropdown-menu dropdown-menu-end shadow">
-                          {/* Show Suspend button only if the user is NOT suspended */}
-                          {!u.isSuspended && !u.isBlocked && (
+                      <ul className="dropdown-menu dropdown-menu-end shadow">
+                        {/* Show Suspend and Block buttons if the user is NOT suspended and NOT blocked */}
+                        {!u.isSuspended && !u.isBlocked && (
+                          <>
                             <li>
                               <button
                                 type="button"
@@ -248,81 +252,57 @@ export default function UserManagementMain() {
                                 ⏳ Suspend
                               </button>
                             </li>
-                          )}
-
-                          {/* Show Unsuspend button only if the user is suspended */}
-                          {u.isSuspended && (
-                            <li>
-                              <button
-                                type="button"
-                                className="dropdown-item"
-                                onClick={() => {
-                                  dispatch(unsuspendUser(u.id)).then(() => {
-                                    dispatch(forceReload()); // Refresh the user list after unsuspending
-                                  });
-                                }}
-                              >
-                                🔄 Unsuspend
-                              </button>
-                            </li>
-                          )}
-
-                          <li><hr className="dropdown-divider" /></li>
-
-                          {/* Show Block button only if the user is NOT blocked */}
-                          {!u.isBlocked && (
+                            <li><hr className="dropdown-divider" /></li>
                             <li>
                               <button
                                 type="button"
                                 className="dropdown-item text-danger"
                                 onClick={() => {
-                                  dispatch(blockUser(u.id)).then(() => {
-                                    dispatch(forceReload()); // Refresh the user list after blocking
-                                  });
+                                  dispatch(blockUser(u.id));
                                 }}
                               >
                                 🚫 Block
                               </button>
                             </li>
-                          )}
+                          </>
+                        )}
 
-                          {/* Show Unblock button only if the user is blocked */}
-                          {u.isBlocked && (
-                            <li>
-                              <button
-                                type="button"
-                                className="dropdown-item"
-                                onClick={() => {
-                                  dispatch(unblockUser(u.id)).then(() => {
-                                    dispatch(forceReload()); // Refresh the user list after unblocking
-                                  });
-                                }}
-                              >
-                                ✅ Unblock
-                              </button>
-                            </li>
-                          )}
-                        </ul>
-                      </div>
-                    </td>
-                    {/* <td>
-                      <div className="serbi-um-actions">
-                        <button
-                          type="button"
-                          className="serbi-um-action-btn serbi-um-action-edit"
-                        >
-                          <FiEdit2 />
-                        </button>
-                        <button
-                          type="button"
-                          className="serbi-um-action-btn serbi-um-action-trash"
-                        >
-                          <FiTrash2 />
-                        </button>
-                      </div>
-                    </td> */}
-                  </tr>
-                ))}
+                        {/* Show Unsuspend button if the user is suspended */}
+                        {u.isSuspended && (
+                          <li>
+                            <button
+                              type="button"
+                              className="dropdown-item"
+                              onClick={() => {
+                                dispatch(unsuspendUser(u.id));
+                              }}
+                            >
+                              🔄 Unsuspend
+                            </button>
+                          </li>
+                        )}
+
+                        {/* Show Unblock button if the user is blocked */}
+                        {u.isBlocked && (
+                          <li>
+                            <button
+                              type="button"
+                              className="dropdown-item"
+                              onClick={() => {
+                                dispatch(unblockUser(u.id)).then(() => {
+                                  dispatch(forceReload()); // Refresh the user list after unblocking
+                                });
+                              }}
+                            >
+                              ✅ Unblock
+                            </button>
+                          </li>
+                        )}
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+              ))}
 
               {!loading && rows.length === 0 && (
                 <tr>

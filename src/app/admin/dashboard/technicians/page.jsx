@@ -12,6 +12,7 @@ import {
 import {
   fetchUsers,
   setPage,
+  setType,
   forceReload,
 } from "@/redux/features/users/usersSlice";
 
@@ -22,7 +23,7 @@ import {
 export default function TechnicianManagement() {
   const dispatch = useDispatch();
 
-  const { shouldReload, list, loading, page, limit, total } = useSelector(
+  const { shouldReload, list, loading, page, limit, total, type, lastFetchedAt, ttl } = useSelector(
     (state) => state.users
   );
 
@@ -33,14 +34,21 @@ export default function TechnicianManagement() {
   const dropdownRef = useRef(null);
 
   /* ================= FETCH ================= */
-  // useEffect(() => {
-  //   dispatch(fetchUsers({ type: "Technician", page, limit }));
-  // }, [dispatch, page, limit]);
   useEffect(() => {
-    if (shouldReload) {
-      dispatch(fetchUsers({ type: "Technician", page, limit })); // Trigger fetching of technicians
+    if (type !== "Technician") {
+      dispatch(setType("Technician"));
     }
-  }, [dispatch, page, limit, shouldReload]); // Ensure that `shouldReload` triggers a re-fetch
+  }, [dispatch, type]);
+
+  useEffect(() => {
+    if (type !== "Technician") return;
+    const now = Date.now();
+    const isStale = !lastFetchedAt || now - lastFetchedAt > ttl;
+
+    if (!shouldReload && !isStale) return;
+
+    dispatch(fetchUsers({ type, page, limit }));
+  }, [dispatch, type, page, limit, shouldReload, lastFetchedAt, ttl]);
 
   /* ================= CLOSE DROPDOWN ON OUTSIDE CLICK ================= */
   useEffect(() => {
@@ -155,35 +163,34 @@ export default function TechnicianManagement() {
             </thead>
 
             <tbody>
-              {loading && (
+              {loading && rows.length === 0 && (
                 <tr>
-                  <td colSpan={5} style={{ padding: 20 }}>
+                  <td colSpan={5} style={{ padding: 20, textAlign: "center" }}>
                     Loading...
                   </td>
                 </tr>
               )}
 
-              {!loading &&
-                rows.map((u) => (
-                  <tr key={u.id}>
-                    <td className="serbi-um-name">{u.name}</td>
+              {rows.map((u) => (
+                <tr key={u.id} style={{ opacity: loading ? 0.6 : 1, transition: "opacity 0.2s" }}>
+                  <td className="serbi-um-name">{u.name}</td>
 
-                    <td>
-                      <div className="serbi-um-contact">
-                        <div className="serbi-um-contact-line">
-                          <FiMail className="serbi-um-contact-ico" />
-                          <span>{u.email}</span>
-                        </div>
-                        <div className="serbi-um-contact-line">
-                          <FiPhone className="serbi-um-contact-ico" />
-                          <span>{u.phone}</span>
-                        </div>
+                  <td>
+                    <div className="serbi-um-contact">
+                      <div className="serbi-um-contact-line">
+                        <FiMail className="serbi-um-contact-ico" />
+                        <span>{u.email}</span>
                       </div>
-                    </td>
+                      <div className="serbi-um-contact-line">
+                        <FiPhone className="serbi-um-contact-ico" />
+                        <span>{u.phone}</span>
+                      </div>
+                    </div>
+                  </td>
 
-                    <td className="text-wrap w-50">{u.address}</td>
+                  <td className="text-wrap w-50">{u.address}</td>
 
-                    {/* <td>
+                  {/* <td>
                         <span
                           className={`serbi-um-status ${u.status === "Active"
                             ? "active"
@@ -194,8 +201,8 @@ export default function TechnicianManagement() {
                         </span>
                       </td> */}
 
-                    {/* ================= DROPDOWN ACTIONS ================= */}
-                    {/* <td style={{ position: "relative" }}>
+                  {/* ================= DROPDOWN ACTIONS ================= */}
+                  {/* <td style={{ position: "relative" }}>
                         <div ref={dropdownRef}>
                           <button
                             className="serbi-um-action-btn"
@@ -266,37 +273,35 @@ export default function TechnicianManagement() {
                           )}
                         </div>
                       </td> */}
-                    <td>
-                      {u.isVerified ? (
-                        <span className="badge bg-success serbi-um-status">Verified</span> // Verified badge
-                      ) : (
-                        <button
-                          type="button"
-                          className="btn serbi-um-status sus-verify"
-                          style={{
-                            border: "1px solid #000"
-                          }}
-                          // onClick={() => dispatch(verifyTechnician(u.id))}
-                          // onClick={() => {
-                          //   dispatch(verifyTechnician(u.id)).then(() => {
-                          //     dispatch(forceReload()); // Refresh the user list after unblocking
-                          //   });
-                          // }}
-                          onClick={() => {
-                            // Dispatch the verifyTechnician action and force reload after success
-                            dispatch(verifyTechnician(u.id)).then(() => {
-                              dispatch(forceReload()); // Refresh the user list after verifying
-                            }).catch((error) => {
-                              console.error("Verification failed:", error);
-                            });
-                          }}
-                        >
-                          Verify Technician
-                        </button>
-                      )}
-                    </td>
-                  </tr>
-                ))}
+                  <td>
+                    {u.isVerified ? (
+                      <span className="badge bg-success serbi-um-status">Verified</span> // Verified badge
+                    ) : (
+                      <button
+                        type="button"
+                        className="btn serbi-um-status sus-verify"
+                        style={{
+                          border: "1px solid #000"
+                        }}
+                        // onClick={() => dispatch(verifyTechnician(u.id))}
+                        // onClick={() => {
+                        //   dispatch(verifyTechnician(u.id)).then(() => {
+                        //     dispatch(forceReload()); // Refresh the user list after unblocking
+                        //   });
+                        // }}
+                        onClick={() => {
+                          // Dispatch the verifyTechnician action
+                          dispatch(verifyTechnician(u.id)).catch((error) => {
+                            console.error("Verification failed:", error);
+                          });
+                        }}
+                      >
+                        Verify Technician
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))}
 
               {!loading && rows.length === 0 && (
                 <tr>

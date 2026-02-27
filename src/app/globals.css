@@ -879,7 +879,9 @@ table th {
   font-weight: 400;
 }
 
-
+.serbi-um-table tbody td:last-child, .serbi-um-table thead th:last-child {
+  text-align: center;
+}
 /* Contact lines */
 .serbi-um-contact {
   display: flex;

@@ -36,10 +36,12 @@ export default function AdminSignupPage() {
 
       if (data?.data) {
         localStorage.setItem("admin", JSON.stringify(data?.data));
+        // Set a cookie so the middleware can read it on the server
+        document.cookie = "admin_session=true; path=/;";
+        showSuccessToast(data?.msg || "Super Admin registered successfully!");
+        // ✅ success → redirect to admin dashboard or login
+        router.push("/admin/dashboard/users");
       }
-      showSuccessToast(data?.msg || "Super Admin registered successfully!");
-      // ✅ success → redirect to admin dashboard or login
-      router.push("/admin/dashboard/users");
     } catch (error) {
       showErrorToast(
         error?.message ||
