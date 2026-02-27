@@ -50,7 +50,7 @@ const usersSlice = createSlice({
 
     type: "User",
     page: 1,
-    limit: 5,
+    limit: 10,
 
     total: 0,
     totalPages: 1,
@@ -96,7 +96,9 @@ const usersSlice = createSlice({
           email: u.email || "-",
           phone: u.phone || "-",
           address: u.locationName || "-",
-          status: u.isDeleted ? "Inactive" : "Active",
+          isVerified: u.isVerified,
+          isSuspended: u.isSuspended,
+          isBlocked: u.isBlocked,
         }));
 
         state.total = pagination.total || usersArray.length;

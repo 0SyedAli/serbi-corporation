@@ -23,6 +23,11 @@ export default function StudentSidebar() {
       path: "/admin/dashboard/users",
     },
     {
+      icon: <LuUserRound size={17} />,
+      label: "Technician Management",
+      path: "/admin/dashboard/technicians",
+    },
+    {
       icon: <LuCalendarCheck size={17} />,
       label: "Service Requests",
       path: "/admin/dashboard/service",

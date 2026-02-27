@@ -10,6 +10,7 @@ import {
   FiMail,
   FiPhone,
   FiUsers,
+  FiMoreVertical,
 } from "react-icons/fi";
 import { TfiReload } from "react-icons/tfi";
 
@@ -20,10 +21,22 @@ import {
   forceReload,
 } from "@/redux/features/users/usersSlice";
 import { showErrorToast } from "@/lib/toast";
+import {
+  suspendUser,
+  unsuspendUser,
+  blockUser,
+  unblockUser,
+} from "@/redux/features/users/adminActions";
 
 export default function UserManagementMain() {
   const [tab, setTab] = useState("customers");
   const [showModal, setShowModal] = useState(false);
+  const [showSuspendModal, setShowSuspendModal] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null);
+
+  const [durationValue, setDurationValue] = useState("");
+  const [durationUnits, setDurationUnits] = useState("minutes");
+  const [reason, setReason] = useState("");
   const dispatch = useDispatch();
   const {
     list,
@@ -73,13 +86,40 @@ export default function UserManagementMain() {
   }, [list, search]);
 
   const totalPages = Math.ceil(total / limit);
+  const openSuspend = (userId) => {
+    setSelectedUserId(userId);
+    setDurationValue("");
+    setDurationUnits("minutes");
+    setReason("");
+    setShowSuspendModal(true);
+  };
 
+  const submitSuspend = () => {
+    if (!selectedUserId) return;
+    if (!reason.trim()) return alert("Please add suspension reason");
+
+    // Dispatch the suspend action
+    dispatch(
+      suspendUser({
+        userId: selectedUserId,
+        durationValue: Number(durationValue),
+        durationUnits,
+        reason,
+      })
+    ).then(() => {
+      // Refresh the user data after the suspend action is successful
+      dispatch(forceReload());
+    });
+
+    setShowSuspendModal(false);
+    setSelectedUserId(null);
+  };
   return (
     <div className="serbi-um-page">
       {/* <div className="serbi-um-title">User Management</div> */}
 
       {/* Tabs */}
-      <div className="">
+      {/* <div className="">
         <div className="serbi-um-tabs">
           <button
             className={`serbi-um-tab ${type === "User" ? "active" : ""
@@ -89,15 +129,9 @@ export default function UserManagementMain() {
             Customers
           </button>
 
-          <button
-            className={`serbi-um-tab ${type === "Technician" ? "active" : ""
-              }`}
-            onClick={() => dispatch(setType("Technician"))}
-          >
-            Technicians
-          </button>
+      
         </div>
-      </div>
+      </div> */}
 
       {/* Main Card */}
       <div className="serbi-um-card">
@@ -145,6 +179,7 @@ export default function UserManagementMain() {
                 <th style={{ width: "34%" }}>Contact</th>
                 <th style={{ width: "20%" }}>Address</th>
                 <th style={{ width: "14%" }}>Status</th>
+                <th style={{ width: "10%" }}>Actions</th>
                 {/* <th style={{ width: "10%" }}>Actions</th> */}
               </tr>
             </thead>
@@ -179,14 +214,97 @@ export default function UserManagementMain() {
                     <td className="text-wrap w-50">{u.address}</td>
 
                     <td>
+                      {/* Display Status */}
                       <span
-                        className={`serbi-um-status ${u.status === "Active" ? "active" : "inactive"
-                          }`}
+                        className={`serbi-um-status ${u.isSuspended || u.isBlocked ? "inactive" : "active"}`}
                       >
-                        {u.status}
+                        {u.isBlocked ? "Blocked" : u.isSuspended ? "Suspended" : "Active"}
                       </span>
                     </td>
 
+                    <td>
+                      {/* Actions Dropdown */}
+                      <div className="dropdown">
+                        <button
+                          className="btn btn-sm btn-light dropdown-toggle"
+                          type="button"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          <FiMoreVertical />
+                        </button>
+
+                        <ul className="dropdown-menu dropdown-menu-end shadow">
+                          {/* Show Suspend button only if the user is NOT suspended */}
+                          {!u.isSuspended && !u.isBlocked && (
+                            <li>
+                              <button
+                                type="button"
+                                className="dropdown-item"
+                                onClick={() => {
+                                  openSuspend(u.id); // Open modal for suspend
+                                }}
+                              >
+                                ⏳ Suspend
+                              </button>
+                            </li>
+                          )}
+
+                          {/* Show Unsuspend button only if the user is suspended */}
+                          {u.isSuspended && (
+                            <li>
+                              <button
+                                type="button"
+                                className="dropdown-item"
+                                onClick={() => {
+                                  dispatch(unsuspendUser(u.id)).then(() => {
+                                    dispatch(forceReload()); // Refresh the user list after unsuspending
+                                  });
+                                }}
+                              >
+                                🔄 Unsuspend
+                              </button>
+                            </li>
+                          )}
+
+                          <li><hr className="dropdown-divider" /></li>
+
+                          {/* Show Block button only if the user is NOT blocked */}
+                          {!u.isBlocked && (
+                            <li>
+                              <button
+                                type="button"
+                                className="dropdown-item text-danger"
+                                onClick={() => {
+                                  dispatch(blockUser(u.id)).then(() => {
+                                    dispatch(forceReload()); // Refresh the user list after blocking
+                                  });
+                                }}
+                              >
+                                🚫 Block
+                              </button>
+                            </li>
+                          )}
+
+                          {/* Show Unblock button only if the user is blocked */}
+                          {u.isBlocked && (
+                            <li>
+                              <button
+                                type="button"
+                                className="dropdown-item"
+                                onClick={() => {
+                                  dispatch(unblockUser(u.id)).then(() => {
+                                    dispatch(forceReload()); // Refresh the user list after unblocking
+                                  });
+                                }}
+                              >
+                                ✅ Unblock
+                              </button>
+                            </li>
+                          )}
+                        </ul>
+                      </div>
+                    </td>
                     {/* <td>
                       <div className="serbi-um-actions">
                         <button
@@ -239,6 +357,85 @@ export default function UserManagementMain() {
               Next
             </button>
           </div>
+          {showSuspendModal && (
+            <div className="modal fade show d-block" tabIndex="-1" role="dialog">
+              <div className="modal-dialog" role="document">
+                <div className="modal-content">
+
+                  <div className="modal-header">
+                    <h5 className="modal-title fw-bold">Suspend User</h5>
+                    <button
+                      type="button"
+                      className="btn-close"
+                      onClick={() => setShowSuspendModal(false)}
+                    />
+                  </div>
+
+                  <div className="modal-body modal-body-suspend">
+                    <div className="serbi-form-group">
+                      <label className="form-label mb-1 ">Duration Value</label>
+                      <input
+                        type="number"
+                        className="form-control "
+                        value={durationValue}
+                        onChange={(e) => setDurationValue(e.target.value)}
+                        min={1}
+                        placeholder="Enter Duration"
+                      />
+                    </div>
+
+                    <div className="serbi-form-group mt-3">
+                      <label className="form-label mb-1">Duration Unit</label>
+                      <select
+                        className="form-select"
+                        value={durationUnits}
+                        onChange={(e) => setDurationUnits(e.target.value)}
+                      >
+                        <option value="minutes">minutes</option>
+                        <option value="hours">hours</option>
+                        <option value="days">days</option>
+                        <option value="weeks">weeks</option>
+                        <option value="months">months</option>
+                        <option value="years">years</option>
+                      </select>
+                    </div>
+
+                    <div className="serbi-form-group mt-3">
+                      <label className="form-label mb-1">Reason</label>
+                      <textarea
+                        className="form-control"
+                        rows={3}
+                        value={reason}
+                        onChange={(e) => setReason(e.target.value)}
+                        placeholder="Violation of terms..."
+                      />
+                    </div>
+                  </div>
+
+                  <div className="modal-footer">
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      onClick={() => setShowSuspendModal(false)}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-danger"
+                      onClick={submitSuspend}
+                    >
+                      Suspend
+                    </button>
+                  </div>
+
+                </div>
+              </div>
+
+              {/* backdrop */}
+              <div className="modal-backdrop fade show"></div>
+            </div>
+          )}
         </div>
       </div>
     </div>

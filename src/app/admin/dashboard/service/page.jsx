@@ -219,7 +219,6 @@ export default function ServiceRequestsMain() {
                             </tr>
                         )}
 
-
                         {!loading &&
                             paginatedRows.map((r) => (
                                 <tr key={r.id}>
