@@ -15,6 +15,7 @@ export const STATUS_TABS = {
     "Rejected",
   ],
   discussion: [
+    "Start",
     "Stop",
     "Completed",
   ],

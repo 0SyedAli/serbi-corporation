@@ -70,29 +70,39 @@ export default function UserManagementMain() {
 
     if (!shouldReload && !isStale) return;
 
-    dispatch(fetchUsers({ type, page, limit }));
-  }, [dispatch, type, page, limit, shouldReload, lastFetchedAt, ttl]);
+    dispatch(fetchUsers({ type }));
+  }, [dispatch, type, shouldReload, lastFetchedAt, ttl]);
 
   useEffect(() => {
     if (error) showErrorToast(error);
   }, [error]);
 
   /* =========================
-     SEARCH
+     SEARCH & CLIENT-SIDE PAGINATION
   ========================= */
-  const rows = useMemo(() => {
-    const q = search.toLowerCase();
+  const filteredList = useMemo(() => {
+    const q = search.toLowerCase().trim();
     if (!q) return list;
 
     return list.filter((u) =>
-      [u.name, u.email, u.phone, u.address, u.status]
+      [u.name, u.email, u.phone, u.address]
         .join(" ")
         .toLowerCase()
         .includes(q)
     );
   }, [list, search]);
 
-  const totalPages = Math.ceil(total / limit);
+  // Reset page to 1 when user searches
+  useEffect(() => {
+    dispatch(setPage(1));
+  }, [search, dispatch]);
+
+  const totalPages = Math.ceil(filteredList.length / limit) || 1;
+
+  const rows = useMemo(() => {
+    const start = (page - 1) * limit;
+    return filteredList.slice(start, start + limit);
+  }, [filteredList, page, limit]);
   const openSuspend = (userId) => {
     setSelectedUserId(userId);
     setDurationValue("");

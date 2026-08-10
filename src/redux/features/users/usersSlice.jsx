@@ -12,10 +12,10 @@ import {
 ========================= */
 export const fetchUsers = createAsyncThunk(
   "users/fetchUsers",
-  async ({ type, page, limit }, { rejectWithValue }) => {
+  async ({ type }, { rejectWithValue }) => {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/user/getAllUsers?type=${type}&page=${page}&limit=${limit}`
+        `${process.env.NEXT_PUBLIC_API_URL}/user/getAllUsers?type=${type}`
       );
 
       const data = await res.json();
@@ -30,12 +30,11 @@ export const fetchUsers = createAsyncThunk(
     }
   },
   {
-    condition: ({ type, page }, { getState }) => {
+    condition: ({ type }, { getState }) => {
       const { users } = getState();
 
       if (
         users.type === type &&
-        users.page === page &&
         users.list.length > 0 &&
         !users.shouldReload
       ) {
@@ -76,7 +75,6 @@ const usersSlice = createSlice({
 
     setPage(state, action) {
       state.page = action.payload;
-      state.shouldReload = true;
     },
 
     forceReload(state) {
@@ -97,7 +95,28 @@ const usersSlice = createSlice({
         const usersArray = action.payload.data?.data || [];
         const pagination = action.payload.data?.pagination || {};
 
-        state.list = usersArray.map((u) => ({
+        // Sort users so newest ones appear at the top
+        const sortedUsers = [...usersArray].sort((a, b) => {
+          const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+          const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+
+          if (dateA && dateB && dateA !== dateB) {
+            return dateB - dateA;
+          }
+
+          if (a._id && b._id && a._id !== b._id) {
+            return String(b._id).localeCompare(String(a._id));
+          }
+
+          return 0;
+        });
+
+        const hasDistinctSortKeys = usersArray.some(
+          (u, i) => i > 0 && (u.createdAt !== usersArray[0].createdAt || u._id !== usersArray[0]._id)
+        );
+        const finalUsers = hasDistinctSortKeys ? sortedUsers : [...usersArray].reverse();
+
+        state.list = finalUsers.map((u) => ({
           id: u._id,
           name: u.fullName || "-",
           email: u.email || "-",
@@ -106,10 +125,11 @@ const usersSlice = createSlice({
           isVerified: u.isVerified,
           isSuspended: u.isSuspended,
           isBlocked: u.isBlocked,
+          createdAt: u.createdAt,
         }));
 
-        state.total = pagination.total || usersArray.length;
-        state.totalPages = pagination.totalPages || 1;
+        state.total = finalUsers.length;
+        state.totalPages = Math.ceil(finalUsers.length / state.limit) || 1;
 
         state.lastFetchedAt = Date.now();
         state.shouldReload = false;

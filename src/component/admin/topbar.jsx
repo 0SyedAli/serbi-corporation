@@ -4,7 +4,10 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 const adminPageTitles = {
   "/admin/dashboard/users": "User Management",
-  "/admin/dashboard/service": "Service Requests",
+  "/admin/dashboard/technicians": "Technician Management",
+  "/admin/dashboard/servicerequest": "Service Requests",
+  "/admin/dashboard/discussionrequest": "Discussion Requests",
+  "/admin/dashboard/service": "Services",
   "/admin/dashboard/category": "All Categories",
   "/admin/dashboard/propertytype": "All Property Types",
   "/admin/dashboard/severity": "All Severities",

@@ -47,8 +47,8 @@ export default function TechnicianManagement() {
 
     if (!shouldReload && !isStale) return;
 
-    dispatch(fetchUsers({ type, page, limit }));
-  }, [dispatch, type, page, limit, shouldReload, lastFetchedAt, ttl]);
+    dispatch(fetchUsers({ type }));
+  }, [dispatch, type, shouldReload, lastFetchedAt, ttl]);
 
   /* ================= CLOSE DROPDOWN ON OUTSIDE CLICK ================= */
   useEffect(() => {
@@ -62,23 +62,10 @@ export default function TechnicianManagement() {
     return () =>
       document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-  console.log(list);
 
-  /* ================= SEARCH ================= */
-  // const rows = useMemo(() => {
-  //   const q = search.toLowerCase();
-  //   if (!q) return list;
-
-  //   return list.filter((u) =>
-
-  //     [u.name, u.email, u.phone, u.address, u.isVerified]
-  //       .join(" ")
-  //       .toLowerCase()
-  //       .includes(q)
-  //   );
-  // }, [list, search]);
-  const rows = useMemo(() => {
-    const q = search.toLowerCase();
+  /* ================= SEARCH & CLIENT-SIDE PAGINATION ================= */
+  const filteredRows = useMemo(() => {
+    const q = search.toLowerCase().trim();
     let filteredList = list;
 
     if (filterVerified !== null) {
@@ -87,7 +74,7 @@ export default function TechnicianManagement() {
 
     if (q) {
       filteredList = filteredList.filter((u) =>
-        [u.name, u.email, u.phone, u.address, u.isVerified]
+        [u.name, u.email, u.phone, u.address]
           .join(" ")
           .toLowerCase()
           .includes(q)
@@ -97,7 +84,17 @@ export default function TechnicianManagement() {
     return filteredList;
   }, [list, search, filterVerified]);
 
-  const totalPages = Math.ceil(total / limit);
+  // Reset page to 1 when search or filter changes
+  useEffect(() => {
+    dispatch(setPage(1));
+  }, [search, filterVerified, dispatch]);
+
+  const totalPages = Math.ceil(filteredRows.length / limit) || 1;
+
+  const rows = useMemo(() => {
+    const start = (page - 1) * limit;
+    return filteredRows.slice(start, start + limit);
+  }, [filteredRows, page, limit]);
 
   return (
     <div className="serbi-um-page">

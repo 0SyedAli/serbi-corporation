@@ -30,6 +30,16 @@ export default function StudentSidebar() {
     {
       icon: <LuCalendarCheck size={17} />,
       label: "Service Requests",
+      path: "/admin/dashboard/servicerequest",
+    },
+    {
+      icon: <LuCalendarCheck size={17} />,
+      label: "Discussion Requests",
+      path: "/admin/dashboard/discussionrequest",
+    },
+    {
+      icon: <LuCalendarCheck size={17} />,
+      label: "Services",
       path: "/admin/dashboard/service",
     },
     {
