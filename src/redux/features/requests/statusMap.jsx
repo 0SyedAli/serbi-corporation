@@ -7,6 +7,7 @@ export const PARENT_TABS = {
 // Child tabs per parent
 export const STATUS_TABS = {
   request: [
+    "All",
     "Pending",
     "On The Way",
     "Arrived",
@@ -15,6 +16,7 @@ export const STATUS_TABS = {
     "Rejected",
   ],
   discussion: [
+    "All",
     "Start",
     "Stop",
     "Completed",

@@ -325,28 +325,29 @@ export default function UserManagementMain() {
           </table>
 
           {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="d-flex justify-content-between align-items-center px-3 gap-2 mt-3">
+              <button
+                className="btn btn-secondary"
+                disabled={page === 1}
+                onClick={() => dispatch(setPage(page - 1))}
+              >
+                Prev
+              </button>
 
-          <div className="d-flex justify-content-between align-items-center px-3 gap-2 mt-3">
-            <button
-              className="btn btn-secondary"
-              disabled={page === 1}
-              onClick={() => dispatch(setPage(page - 1))}
-            >
-              Prev
-            </button>
+              <span>
+                Page {page} of {totalPages}
+              </span>
 
-            <span>
-              Page {page} of {totalPages}
-            </span>
-
-            <button
-              className="btn btn-secondary"
-              disabled={page === totalPages}
-              onClick={() => dispatch(setPage(page + 1))}
-            >
-              Next
-            </button>
-          </div>
+              <button
+                className="btn btn-secondary"
+                disabled={page === totalPages}
+                onClick={() => dispatch(setPage(page + 1))}
+              >
+                Next
+              </button>
+            </div>
+          )}
           {showSuspendModal && (
             <div className="modal fade show d-block" tabIndex="-1" role="dialog">
               <div className="modal-dialog" role="document">

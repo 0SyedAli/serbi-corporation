@@ -101,13 +101,13 @@ export default function TechnicianManagement() {
       <div className="serbi-um-card">
 
         {/* ================= HEADER ================= */}
-        <div className="serbi-um-card-head">
+        <div className="serbi-um-card-head flex-wrap">
           <div className="serbi-um-card-head-left">
             <FiUsers className="serbi-um-head-icon" />
             <div className="serbi-um-card-head-title">Technicians</div>
           </div>
           <div className="d-flex align-items-center">
-            <div className="filter-buttons d-flex align-items-cetner gap-2">
+            <div className="filter-buttons d-flex align-items-cetner gap-2 flex-wrap">
               <button
                 className="btn serbi-um-add-btn2 btn-secondary"
                 onClick={() => setFilterVerified(null)} // Reset filter
@@ -311,27 +311,29 @@ export default function TechnicianManagement() {
           </table>
 
           {/* ================= PAGINATION ================= */}
-          <div className="d-flex justify-content-between align-items-center px-3 gap-2 mt-3">
-            <button
-              className="btn btn-secondary"
-              disabled={page === 1}
-              onClick={() => dispatch(setPage(page - 1))}
-            >
-              Prev
-            </button>
+          {totalPages > 1 && (
+            <div className="d-flex justify-content-between align-items-center px-3 gap-2 mt-3">
+              <button
+                className="btn btn-secondary"
+                disabled={page === 1}
+                onClick={() => dispatch(setPage(page - 1))}
+              >
+                Prev
+              </button>
 
-            <span>
-              Page {page} of {totalPages || 1}
-            </span>
+              <span>
+                Page {page} of {totalPages || 1}
+              </span>
 
-            <button
-              className="btn btn-secondary"
-              disabled={page === totalPages}
-              onClick={() => dispatch(setPage(page + 1))}
-            >
-              Next
-            </button>
-          </div>
+              <button
+                className="btn btn-secondary"
+                disabled={page === totalPages}
+                onClick={() => dispatch(setPage(page + 1))}
+              >
+                Next
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

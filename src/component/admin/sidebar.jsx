@@ -2,21 +2,15 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { AiOutlineHome } from "react-icons/ai";
 import { LuCalendarCheck, LuUserRound } from "react-icons/lu";
-import { IoLogOutOutline } from "react-icons/io5";
+import { IoLogOutOutline, IoCloseOutline } from "react-icons/io5";
 import Image from "next/image";
 
-export default function StudentSidebar() {
+export default function AdminSidebar({ isOpen, onClose }) {
   const pathname = usePathname();
   const router = useRouter();
 
   const menuItems = [
-    // {
-    //   icon: <AiOutlineHome size={17} />,
-    //   label: "Dashboard",
-    //   path: "/admin/dashboard",
-    // },
     {
       icon: <LuUserRound size={17} />,
       label: "User Management",
@@ -39,7 +33,7 @@ export default function StudentSidebar() {
     },
     {
       icon: <LuCalendarCheck size={17} />,
-      label: "Services",
+      label: "Service Management",
       path: "/admin/dashboard/service",
     },
     {
@@ -57,36 +51,6 @@ export default function StudentSidebar() {
       label: "Severity",
       path: "/admin/dashboard/severity",
     },
-    // {
-    //   icon: <TbNotification size={17} />,
-    //   label: "Technician Management",
-    //   path: "/admin/dashboard/technician",
-    // },
-    // {
-    //   icon: <MdOutlineAnalytics size={17} />,
-    //   label: "Payments & Billing",
-    //   path: "/admin/dashboard/payment",
-    // },
-    // {
-    //   icon: <MdOutlineAnalytics size={17} />,
-    //   label: "Reports & Analytics",
-    //   path: "/admin/dashboard/reports",
-    // },
-    // {
-    //   icon: <MdOutlineAnalytics size={17} />,
-    //   label: "Pest Types Management",
-    //   path: "/admin/dashboard/pest-types",
-    // },
-    // {
-    //   icon: <MdOutlineAnalytics size={17} />,
-    //   label: "Settings",
-    //   path: "/admin/dashboard/setting",
-    // },
-    // {
-    //   icon: <MdOutlineAnalytics size={17} />,
-    //   label: "Support / Complaints",
-    //   path: "/admin/dashboard/support",
-    // },
   ];
 
   const userMenuItems = [
@@ -99,15 +63,23 @@ export default function StudentSidebar() {
       localStorage.removeItem("admin");
       document.cookie = "admin_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT;";
     }
-
     router.replace("/auth/login");
   };
+
   return (
-    <div className="sidebar-container px-2">
-      <div className="sidebar-header">
+    <div className={`sidebar-container px-2 ${isOpen ? "open" : ""}`}>
+      <div className="sidebar-header d-flex justify-content-between align-items-center">
         <div className="sidebar-logo">
-          <Image src="/images/logo.png" width={100} height={50} className="img-fluid" alt="" />
+          <Image src="/images/logo.png" width={100} height={50} className="img-fluid" alt="Logo" />
         </div>
+        {/* Close button for mobile */}
+        <button
+          className="sidebar-close-btn d-lg-none"
+          onClick={onClose}
+          aria-label="Close Navigation"
+        >
+          <IoCloseOutline size={26} />
+        </button>
       </div>
 
       <ul className="list-unstyled list-unstyled2">
@@ -116,6 +88,7 @@ export default function StudentSidebar() {
             <Link
               href={item.path}
               className={`menu-item ${isActive(item.path) ? "active" : ""}`}
+              onClick={() => onClose?.()}
             >
               <span className="menu-icon">{item.icon}</span>
               <span>{item.label}</span>
@@ -125,21 +98,15 @@ export default function StudentSidebar() {
       </ul>
 
       <div className="sidebar-title mt-2">OTHER</div>
-      <ul className="list-unstyled ">
+      <ul className="list-unstyled">
         {userMenuItems.map((item) => (
           <li key={item.path}>
-            {/* <Link
-              href={item.path}
-              className={`menu-item ${isActive(item.path) ? "active" : ""}`}
-            >
-              <span className="menu-icon">{item.icon}</span>
-              <span>{item.label}</span>
-            </Link> */}
-
             <div
               className={`menu-item`}
-              onClick={() => logout(router)}
-
+              onClick={() => {
+                onClose?.();
+                logout(router);
+              }}
             >
               <span className="menu-icon">{item.icon}</span>
               <span>{item.label}</span>
